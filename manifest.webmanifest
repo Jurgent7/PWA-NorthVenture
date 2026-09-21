@@ -8,12 +8,12 @@
   "background_color": "#FFFCF6",
   "theme_color": "#16302B",
   "icons": [
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "shortcuts": [
-    { "name": "2D map", "url": "2d/" },
-    { "name": "3D map", "url": "3d/" }
+    { "name": "2D map", "url": "index_2D.html" },
+    { "name": "3D map", "url": "index_3D.html" }
   ]
 }

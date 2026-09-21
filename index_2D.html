@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <title>NorthVenture Valbona Map</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<link rel="manifest" href="../manifest.webmanifest">
+<link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#16302B">
-<link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
-<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="NorthVenture">
@@ -1670,9 +1670,9 @@
 <script>
 /* NorthVenture app: back to the landing page */
 (function () {
-  if ("serviceWorker" in navigator) { window.addEventListener("load", function () { navigator.serviceWorker.register("../sw.js").catch(function () {}); }); }
+  if ("serviceWorker" in navigator) { window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); }); }
   var svg = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>';
-  function go() { location.href = "../"; }
+  function go() { location.href = "index.html"; }
   try {
     var HomeControl = L.Control.extend({
       options: { position: "topright" },

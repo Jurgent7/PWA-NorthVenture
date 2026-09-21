@@ -16,14 +16,14 @@ const MAX_TILES = 2500;
 const SHELL_URLS = [
   "./",
   "./index.html",
-  "./2d/",
-  "./3d/",
+  "./index_2D.html",
+  "./index_3D.html",
   "./manifest.webmanifest",
-  "./icons/icon-192.png",
-  "./icons/icon-512.png",
-  "./icons/apple-touch-icon.png",
-  "./icons/favicon-32.png",
-  "./icons/logo.png",
+  "./icon-192.png",
+  "./icon-512.png",
+  "./apple-touch-icon.png",
+  "./favicon-32.png",
+  "./logo.png",
 ];
 
 // Everything the two maps load from a CDN.
