@@ -7,11 +7,11 @@
  *
  * To ship an update to the app pages, change VERSION below.
  */
-const VERSION = "v1";
+const VERSION = "v2";
 const SHELL = `nv-shell-${VERSION}`;
 const LIBS = `nv-libs-${VERSION}`;
 const TILES = "nv-tiles"; // not versioned: viewed map areas survive app updates
-const MAX_TILES = 2500;
+const MAX_TILES = 4000;
 
 const SHELL_URLS = [
   "./",
@@ -24,6 +24,8 @@ const SHELL_URLS = [
   "./apple-touch-icon.png",
   "./favicon-32.png",
   "./logo.png",
+  "./card-2d.jpg",
+  "./card-3d.jpg",
 ];
 
 // Everything the two maps load from a CDN.
@@ -128,26 +130,50 @@ async function appPage(event) {
   return Response.error();
 }
 
+// Tile servers hand out the same tile from a.*, b.* and c.* hosts; treat them as one entry.
+function tileKey(u) {
+  return u.replace(
+    /^https:\/\/[abc]\.(tile\.opentopomap\.org|tile\.openstreetmap\.org|basemaps\.cartocdn\.com)/,
+    "https://a.$1"
+  );
+}
+
 // Third-party responses are re-requested in CORS mode so the cache holds real
 // responses (opaque ones count as ~7 MB each against the storage quota).
-async function cacheFirst(cacheName, req, trim) {
+// If a tile server has no CORS headers, the tile is passed through and stored
+// as an opaque response instead, so it still works offline.
+async function cacheFirst(cacheName, req, isTile) {
   const cache = await caches.open(cacheName);
-  const hit = await cache.match(req.url);
-  if (hit) return hit;
+  const key = isTile ? tileKey(req.url) : req.url;
+  const hit = await cache.match(key);
+  if (hit && !(hit.type === "opaque" && req.mode === "cors")) return hit;
+
+  let res = null;
   try {
-    const res = await fetch(req.url, { mode: "cors", credentials: "omit" });
-    if (res.ok) {
-      await cache.put(req.url, res.clone());
-      if (trim && Math.random() < 0.05) trimCache(cache);
-    }
-    return res;
+    res = await fetch(req.url, { mode: "cors", credentials: "omit" });
   } catch (err) {
-    try {
-      return await fetch(req); // server without CORS: pass through uncached
-    } catch (err2) {
-      return Response.error();
-    }
+    res = null;
   }
+  if (res) {
+    if (res.ok) store(cache, key, res.clone(), isTile);
+    return res;
+  }
+  try {
+    const raw = await fetch(req); // server without CORS: pass through
+    if (isTile && raw.type === "opaque") store(cache, key, raw.clone(), true);
+    return raw;
+  } catch (err) {
+    return Response.error();
+  }
+}
+
+function store(cache, key, res, isTile) {
+  cache
+    .put(key, res)
+    .then(() => {
+      if (isTile && Math.random() < 0.02) trimCache(cache);
+    })
+    .catch(() => {});
 }
 
 async function trimCache(cache) {
